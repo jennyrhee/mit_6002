@@ -182,20 +182,37 @@ def evaluate_models_on_training(x, y, models):
     Returns:
         None
     """
-    # TODO
-    pass
+    estimated = [[] * len(models)]
+    r_squareds = []
+    degs = []
+    for i, model in enumerate(models):
+        degs.append(len(model) - 1)
+        if degs[i] == 1:
+            a, b = model
+            for x_i in x:
+                estimated[i].append(a * x_i + b)
+            r_squareds.append(r_squared(y, estimated[i]))
+
+    for i, est in enumerate(estimated):
+        pylab.title('degree = ' + str(degs[i]) + ', R-squared = ' + 
+                    str(r_squareds[i]))
+        pylab.xlabel('Years')
+        pylab.ylabel('Temperature')
+        pylab.plot(x, y, 'bo', label='Measured points')
+        pylab.plot(x, est, 'r', label='Best fit curve')
+        pylab.show()
 
 
 # Begining of program
-# raw_data = Climate('data.csv')
+raw_data = Climate('pset4/data.csv')
 
-# # Problem 3
-# y = []
-# x = INTERVAL_1
-# for year in INTERVAL_1:
-#     y.append(raw_data.get_daily_temp('BOSTON', 1, 10, year))
-# models = generate_models(x, y, [1])
-# evaluate_models_on_training(x, y, models)
+# Problem 3
+y = []
+x = INTERVAL_1
+for year in INTERVAL_1:
+    y.append(raw_data.get_daily_temp('BOSTON', 1, 10, year))
+models = generate_models(x, y, [1])
+evaluate_models_on_training(x, y, models)
 
 
 # # Problem 4: FILL IN MISSING CODE TO GENERATE y VALUES
