@@ -194,7 +194,7 @@ def evaluate_models_on_training(x, y, models):
             r_squareds.append(r_squared(y, estimated[i]))
 
     for i, est in enumerate(estimated):
-        pylab.title('degree = ' + str(degs[i]) + ', R-squared = ' + 
+        pylab.title('degree = ' + str(degs[i]) + ', R-squared = ' +
                     str(r_squareds[i]))
         pylab.xlabel('Years')
         pylab.ylabel('Temperature')
@@ -215,10 +215,11 @@ models = generate_models(x, y, [1])
 evaluate_models_on_training(x, y, models)
 
 
-# # Problem 4: FILL IN MISSING CODE TO GENERATE y VALUES
-# x1 = INTERVAL_1
-# x2 = INTERVAL_2
-# y = []
-# # MISSING LINES
-# models = generate_models(x, y, [1])
-# evaluate_models_on_training(x, y, models)
+# Problem 4: FILL IN MISSING CODE TO GENERATE y VALUES
+x1 = INTERVAL_1
+x2 = INTERVAL_2
+y = []
+for year in x1:
+    y.append(np.mean(raw_data.get_yearly_temp('BOSTON', year)))
+models = generate_models(x1, y, [1])
+evaluate_models_on_training(x1, y, models)
