@@ -262,8 +262,7 @@ class StandardRobot(Robot):
         been cleaned.
         """
         new_pos = self.position.getNewPosition(self.direction, self.speed)
-        if (new_pos.x <= self.room.width and new_pos.y <= self.room.height) \
-                and (new_pos.x >= 0 and new_pos.y >= 0):
+        if self.room.isPositionInRoom(new_pos) is True:
             self.setRobotPosition(new_pos)
             self.room.cleanTileAtPosition(self.position)
         else:
@@ -272,7 +271,7 @@ class StandardRobot(Robot):
 
 
 # Uncomment this line to see your implementation of StandardRobot in action!
-# testRobotMovement(StandardRobot, RectangularRoom)
+testRobotMovement(StandardRobot, RectangularRoom)
 
 
 # === Problem 4
@@ -313,7 +312,7 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
 
 
 # Uncomment this line to see how much your simulation takes on average
-print(runSimulation(20, 1.0, 10, 10, 0.95, 30, StandardRobot))
+print(runSimulation(1, 1.0, 10, 10, 0.75, 30, StandardRobot))
 
 
 # === Problem 5
@@ -329,7 +328,13 @@ class RandomWalkRobot(Robot):
         Move the robot to a new position and mark the tile it is on as having
         been cleaned.
         """
-        raise NotImplementedError
+        self.setRobotDirection(random.randint(0, 359))
+        new_pos = self.position.getNewPosition(self.direction, self.speed)
+        if self.room.isPositionInRoom(new_pos) is True:
+            self.setRobotPosition(new_pos)
+            self.room.cleanTileAtPosition(self.position)
+        else:
+            self.setRobotDirection(random.randint(0, 359))
 
 
 def showPlot1(title, x_label, y_label):
@@ -383,16 +388,17 @@ def showPlot2(title, x_label, y_label):
 # NOTE: If you are running the simulation, you will have to close it
 # before the plot will show up.
 
+# NOTE: Remember to comment out anim in runSimulation or it will take very
+# long to run
+
 #
 # 1) Write a function call to showPlot1 that generates an appropriately-labeled
 #     plot.
-#
-#       (... your call here ...)
-#
+showPlot1('Time It Takes 1-10 Robots to Clean 80% of a Room',
+          'Number of Robots', 'Time-steps')
 
 #
 # 2) Write a function call to showPlot2 that generates an appropriately-labeled
 #     plot.
-#
-#       (... your call here ...)
-#
+showPlot2('Time It Takes Two Robots to Clean 80% of Variously Sized Rooms',
+          'Aspect Ratio', 'Time-steps')
